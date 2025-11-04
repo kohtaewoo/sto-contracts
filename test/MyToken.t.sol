@@ -8,7 +8,7 @@ import "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.s
 contract MyTokenTest is Test {
     MyToken public token;
     address public owner = address(0x1);
-    address public user  = address(0x2);
+    address public user = address(0x2);
 
     function setUp() public {
         token = new MyToken();
@@ -29,12 +29,7 @@ contract MyTokenTest is Test {
 
     // 권한 없는 계정이 mint 시도 → OZ의 OwnableUnauthorizedAccount 에러를 정확히 기대
     function test_Fail_MintingByNonOwner() public {
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                OwnableUpgradeable.OwnableUnauthorizedAccount.selector,
-                user
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(OwnableUpgradeable.OwnableUnauthorizedAccount.selector, user));
         vm.prank(user);
         token.mint(user, 100 ether);
     }
